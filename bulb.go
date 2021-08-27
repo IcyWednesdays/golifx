@@ -502,8 +502,8 @@ func (b *Bulb) MultizoneSetColorZones(hsbk *HSBK, duration uint32, startIndex ui
 	msg := makeMessageWithType(_MULTIZONE_EXTENDED_SET_COLOR_ZONES)
 	msg.payout = make([]byte, 15)
 
-	writeUInt8(msg.payout[0], startIndex)
-	writeUInt8(msg.payout[1], endIndex)
+	msg.payout[0] = startIndex
+	msg.payout[1] = endIndex
 
 	hsbk.Read(msg.payout[2:10])
 
@@ -511,7 +511,7 @@ func (b *Bulb) MultizoneSetColorZones(hsbk *HSBK, duration uint32, startIndex ui
 		writeUInt32(msg.payout[10:14], duration)
 	}
 
-	writeUInt8(msg.payout[14], 1)
+	msg.payout[14] = uint8(1)
 
 	err := b.sendWithAcknowledgement(msg, time.Millisecond*500)
 
