@@ -499,7 +499,7 @@ func (b *Bulb) SetColorState(hsbk *HSBK, duration uint32) error {
 }
 
 func (b *Bulb) MultizoneSetColorZones(hsbk *HSBK, duration uint32, startIndex uint8, endIndex uint8) error {
-	msg := makeMessageWithType(_MULTIZONE_EXTENDED_SET_COLOR_ZONES)
+	msg := makeMessageWithType(_MULTIZONE_SET_COLOR_ZONES)
 	msg.payout = make([]byte, 15)
 
 	msg.payout[0] = startIndex
