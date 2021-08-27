@@ -498,6 +498,32 @@ func (b *Bulb) SetColorState(hsbk *HSBK, duration uint32) error {
 	return nil
 }
 
+func (b *Bulb) MultizoneSetColorZones(hsbk *HSBK, duration uint32, startIndex uint8, endIndex uint8) error {
+	msg := makeMessageWithType(_MULTIZONE_EXTENDED_SET_COLOR_ZONES)
+	msg.payout = make([]byte, 15)
+
+	writeUInt8(msg.payout[0], startIndex)
+	writeUInt8(msg.payout[1], endIndex)
+
+	hsbk.Read(msg.payout[2:10])
+
+	if duration > 0 {
+		writeUInt32(msg.payout[10:14], duration)
+	}
+
+	writeUInt8(msg.payout[14], 1)
+
+	err := b.sendWithAcknowledgement(msg, time.Millisecond*500)
+
+	if err != nil {
+		return err
+	}
+
+	b.color = hsbk
+
+	return nil
+}
+
 func (b *Bulb) SetColorStateWithResponse(hsbk *HSBK, duration uint32) (*BulbState, error) {
 	msg := makeMessageWithType(_SET_COLOR)
 	msg.res_required = true

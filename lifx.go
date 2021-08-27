@@ -35,13 +35,15 @@ const (
 	_ECHO_REQUEST        = 58
 	_ECHO_RESPONSE       = 59
 
-	_GET                  = 101
-	_SET_COLOR            = 102
-	_SET_WAVEFORM         = 103
-	_STATE                = 107
-	_GET_POWER_DURATION   = 116
-	_SET_POWER_DURATION   = 117
-	_POWER_STATE_DURATION = 118
+	_GET                                = 101
+	_SET_COLOR                          = 102
+	_SET_WAVEFORM                       = 103
+	_STATE                              = 107
+	_GET_POWER_DURATION                 = 116
+	_SET_POWER_DURATION                 = 117
+	_POWER_STATE_DURATION               = 118
+	_MULTIZONE_SET_COLOR_ZONES          = 501
+	_MULTIZONE_EXTENDED_SET_COLOR_ZONES = 510
 )
 
 const (
