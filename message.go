@@ -113,6 +113,10 @@ func boolToUInt8(b bool) uint8 {
 	return 0
 }
 
+func writeUInt8(buff []byte, data uint16) {
+	buff[0] = byte(data)
+}
+
 func writeUInt16(buff []byte, data uint16) {
 	buff[0] = byte(data)
 	buff[1] = byte(data >> 8)
