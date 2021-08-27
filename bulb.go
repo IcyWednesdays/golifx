@@ -69,6 +69,14 @@ type (
 		Power bool
 		Label string
 	}
+
+	ZoneConfiguration struct {
+		Color    *HSBK
+		Duration uint32
+		// Start/End zones betwee 0-15
+		StartZone uint64
+		EndZone   uint64
+	}
 )
 
 var (
@@ -520,6 +528,37 @@ func (b *Bulb) MultizoneSetColorZones(hsbk *HSBK, duration uint32, startIndex ui
 	}
 
 	b.color = hsbk
+
+	return nil
+}
+
+func (b *Bulb) MultizoneExtendedSetColorZones(zoneConfigurations []ZoneConfiguration, duration uint32) error {
+	msg := makeMessageWithType(_MULTIZONE_EXTENDED_SET_COLOR_ZONES)
+	msg.payout = make([]byte, 664)
+
+	writeUInt32(msg.payout[0:3], duration)
+
+	msg.payout[4] = uint8(1)        //MultiZoneExtendedApplicationRequest
+	writeUInt16(msg.payout[5:7], 0) // Index TODO: what should this value be?
+	msg.payout[7] = uint8(1)
+
+	var colours [656]byte
+	baseByte := 8
+
+	for _, zc := range zoneConfigurations {
+		for zone := zc.StartZone; zone >= zc.EndZone; zone++ {
+			b := baseByte + int(zone*8)
+			zc.Color.Read(colours[b : b+8])
+		}
+	}
+
+	err := b.sendWithAcknowledgement(msg, time.Millisecond*500)
+
+	if err != nil {
+		return err
+	}
+
+	// b.color = hsbk
 
 	return nil
 }
