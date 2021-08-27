@@ -536,11 +536,11 @@ func (b *Bulb) MultizoneExtendedSetColorZones(zoneConfigurations []ZoneConfigura
 	msg := makeMessageWithType(_MULTIZONE_EXTENDED_SET_COLOR_ZONES)
 	msg.payout = make([]byte, 664)
 
-	writeUInt32(msg.payout[0:3], duration)
+	writeUInt32(msg.payout[0:4], duration)
 
-	msg.payout[4] = uint8(1)        //MultiZoneExtendedApplicationRequest
-	writeUInt16(msg.payout[5:7], 0) // Index TODO: what should this value be?
-	msg.payout[7] = uint8(1)
+	msg.payout[5] = uint8(1)        //MultiZoneExtendedApplicationRequest
+	writeUInt16(msg.payout[6:8], 0) // Index TODO: what should this value be?
+	msg.payout[8] = uint8(1)
 
 	var colours [656]byte
 	baseByte := 8
