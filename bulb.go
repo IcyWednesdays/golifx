@@ -548,6 +548,7 @@ func (b *Bulb) MultizoneExtendedSetColorZones(zoneConfigurations []ZoneConfigura
 	for _, zc := range zoneConfigurations {
 		for zone := zc.StartZone; zone >= zc.EndZone; zone++ {
 			b := baseByte + int(zone*8)
+			fmt.Printf("Writing bytes %d to %d", b, b+8)
 			zc.Color.Read(colours[b : b+8])
 		}
 	}
