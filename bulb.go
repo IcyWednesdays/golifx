@@ -532,6 +532,17 @@ func (b *Bulb) MultizoneSetColorZones(hsbk *HSBK, duration uint32, startIndex ui
 	return nil
 }
 
+func (b *Bulb) MultizoneGetColorZones(startIndex uint8, endIndex uint8) error {
+	msg := makeMessageWithType(_MULTIZONE_GET_COLOR_ZONES)
+	msg.payout = make([]byte, 2)
+
+	msg.payout[0] = startIndex
+	msg.payout[1] = endIndex
+
+	err := b.sendWithAcknowledgement(msg, time.Millisecond*500)
+	return err
+}
+
 func (b *Bulb) MultizoneExtendedSetColorZones(zoneConfigurations []ZoneConfiguration, duration uint32) error {
 	msg := makeMessageWithType(_MULTIZONE_EXTENDED_SET_COLOR_ZONES)
 	msg.payout = make([]byte, 664)
